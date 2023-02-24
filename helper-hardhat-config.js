@@ -12,7 +12,13 @@ const networkConfig = {
   //31337 hardhat Network
 }
 
+const developmentChains = ["hardhat", "localhost"]
+const DECIMALS = 8
+const INITIAL_ANSWER = 200000000000 //the price we want + the number of decimals after with ZEROS 
+
 module.exports = {
   networkConfig,
-  
+  developmentChains,
+  DECIMALS,
+  INITIAL_ANSWER,
 }

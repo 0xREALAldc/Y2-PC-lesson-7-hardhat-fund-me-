@@ -10,12 +10,12 @@
                         // hre - Hardhat Runtime Environment
 // module.exports = async (hre) => {}
 
-const { networkConfig } = require("../helper-hardhat-config")
+const { networkConfig, developmentChains } = require("../helper-hardhat-config")
 const { network } = require("hardhat")
 
 module.exports = async ({ getNamedAccounts, deployments }) => {
   // we're getting the deploy and log functions
-  const { deploy, log } = deployments
+  const { deploy, log, get } = deployments
 
   // here we're gettint the deployer account that we defined in the hardhat.config.js
   const { deployer } = await getNamedAccounts() // this is a way for us to get accounts 
@@ -24,21 +24,30 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   const chainId = network.config.chainId
 
   // when going for localhost or hardhat network we want to use a mock
-  // we will do something to have the contract address for the chainlink datafeed to be easy to be changed
-  // when we change the chain that we're deploying
+  let ethUsdPriceFeedAddress
 
-  // using the variable 'networkConfig' we can use the 'chainId' to get the contract address to that specific chain
-  const ethUsdPriceFeedAddress = networkConfig[chainId]["ethUsdPriceFeed"]
-
-  //if the contract doesn't exist, we deploy a minimal version of it for our local testing
-
+  // if we're in a development network
+  if (developmentChains.includes(network.name)) {
+    // this GET used here, if we're using a development network, will get the latest deployed contract with the 
+    // name that we informed
+    const ethUsdAggregator = await get("MockV3Aggregator") 
+    ethUsdPriceFeedAddress = ethUsdAggregator.address
+  } else {
+    // using the variable 'networkConfig' we can use the 'chainId' to get the contract address to that specific chain
+    ethUsdPriceFeedAddress = networkConfig[chainId]["ethUsdPriceFeed"]
+  }
   
   // to deploy we use the code below
   const fundMe = await deploy("FundMe", {
     from: deployer,
+    //here we pass the arguments/parameters to the constructor, that in our would be the address for the chainlink data feed
     args: [
       ethUsdPriceFeedAddress,
-    ], //here we pass the arguments/parameters to the constructor, that in our would be the address for the chainlink data feed
+    ], 
     log: true, //some custom logs 
   })
+  // automatically verifying our contract
+  log("-----------------------------------------------------------")
 }
+
+module.exports.tags = ["all", "fundme"]

@@ -1,7 +1,7 @@
 // here we're gonna define addresses for data feeds that will help us deploy to different chains 
 
 const networkConfig = {
-  4: {
+  5: {
     name: "goerli",
     ethUsdPriceFeedAddress: "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e"
   },

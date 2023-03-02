@@ -4,6 +4,8 @@ pragma solidity ^0.8.8;
 //imports
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "./PriceConverter.sol";
+import "hardhat/console.sol";
+
 //error codes
 error FundMe__NotOwner();
 
@@ -53,6 +55,7 @@ contract FundMe {
      */
     function fund() public payable {
         require(msg.value.getConversionRate(priceFeed) >= MINIMUM_USD, "You need to spend more ETH!");
+        // console.log("Amount funded: %s", msg.value);
         addressToAmountFunded[msg.sender] += msg.value;
         funders.push(msg.sender);
     }

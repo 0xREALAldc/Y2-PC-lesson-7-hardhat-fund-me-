@@ -18,5 +18,12 @@
     "hardhat-gas-reporter": "^1.0.8",
     "solidity-coverage": "^0.8.0",
     "typechain": "^8.1.0"
+  },
+  "scripts": {
+    "test": "yarn hardhat test",
+    "test:staging": "yarn hardhat test --network goerli",
+    "lint": "yarn solhint 'contracts/*.sol'",
+    "lint:fix": "yarn solhint 'contrcts/*.sol' --fix",
+    "coverage": "yarn hardhat coverage"
   }
 }

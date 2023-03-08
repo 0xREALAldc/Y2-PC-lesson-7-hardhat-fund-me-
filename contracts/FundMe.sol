@@ -42,13 +42,13 @@ contract FundMe {
     }
 
     //   write their tests after TODO
-    // receive() external payable {
-    //     fund();
-    // }
+    receive() external payable {
+        fund();
+    }
 
-    // fallback() external payable {
-    //     fund();
-    // }
+    fallback() external payable {
+        fund();
+    }
 
     /**
      * @notice This function funds this contract

@@ -47,7 +47,10 @@ contract FundMe {
     }
 
     fallback() external payable {
-        fund();
+      // addd this validation because when calling from the web app, it was causing an error (don't actually know yet why)
+        if (msg.value > 0) {
+          fund();
+        }
     }
 
     /**
